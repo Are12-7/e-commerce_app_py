@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Product, Profile
+from . models import Product, User
 
 
 @admin.register(Product)
@@ -8,7 +8,4 @@ class ProductModelAdmin(admin.ModelAdmin):
                     'discounted_price', 'description', 'features', 'category', 'product_image']
 
 
-@admin.register(Profile)
-class ProfileModelAdmin(admin.ModelAdmin):
-    list_display = ['id', 'full_name', 'mobile',
-                    'city', 'address', 'zipcode', 'province']
+admin.site.register(User)

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 PROVINCE_OPTIONS = (
     ('Alberta', 'AL'),
@@ -28,20 +28,19 @@ CATEGORY_OPTIONS = (
     ('IC', 'Ice-Creams'),
 )
 
-# PROFILE
+# USER
 
 
-class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=150)
-    mobile = models.IntegerField(default=0)
-    city = models.CharField(max_length=60)
-    address = models.CharField(max_length=200)
-    zipcode = models.CharField(max_length=150)
-    province = models.CharField(choices=PROVINCE_OPTIONS, max_length=150)
+class User(AbstractUser):
+    username = models.CharField(max_length=8, null=True)
+    first_name = models.CharField(max_length=80, null=True)
+    last_name = models.CharField(max_length=100, null=True)
+    email = models.EmailField(unique=True, null=True)
+    phone = models.CharField(max_length=14, unique=True, null=True)
+    address = models.CharField(max_length=150, unique=True, null=True)
 
-    def __str__(self):
-        return self.full_name
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username','first_name','last_name', 'phone','address']
 
 
 # PRODUCT

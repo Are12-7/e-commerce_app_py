@@ -3,16 +3,18 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_view
-from . forms import LoginForm, ForgotPasswordForm
+from . forms import ForgotPasswordForm
 
 urlpatterns = [
-    path('register/', views.register, name='register'),
-    path('login/', auth_view.LoginView.as_view(template_name='app/login.html',
-         authentication_form=LoginForm), name='login'),
+    path('register/', views.registerPage, name='register'),
+    path('login/', views.loginPage, name='login'),
+    path('logout/', views.logoutUser, name="logout"),
+    path('profile/<int:id>/', views.profilePage, name='profile'),
+    path('update-profile/', views.updateProfile, name="update-profile"),
     path('forgot-password/', auth_view.PasswordResetView.as_view(template_name='app/forgot_password.html',
          form_class=ForgotPasswordForm), name='forgot-password'),
-    path('profile/', views.profile, name='profile'),
-    path('', views.home),
+
+    path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     path('category/<slug:val>', views.category, name='category'),

@@ -1,7 +1,7 @@
 {% extends 'app/base.html' %} 
 {% load static %} 
 {% block title %} 
-  Register
+  Edit Profile
 {% endblock title %}
 
 {% block main-content %}
@@ -9,7 +9,7 @@
         <div class="row my-3">
             <div class="col-sm-6 offset-sm-3">
                 
-                <h3 class="text-center">Create Account</h3>
+                <h3 class="text-center">Edit Profile</h3>
 
                   <!--INVALID/SUCCESS MESSAGE-->
                   {% if messages %}
@@ -29,16 +29,10 @@
                         </small>
                         <br>
                     {% endfor %}
-                    <input type="submit" value="Submit" class="btn btn-primary">
                     <br>
-                    <div class="text-center text-primary fw-bold">
-                        <small>
-                            Already have an account?
-                            <a href="{% url 'login' %}" class="text-danger">
-                                Login
-                            </a>
-                        </small>
-                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="{% url 'home' %}" class="btn btn-success">Cancel</a>
+                    <br>
 
                     <!--DISPLAY ERROR MESSAGE-->
                     {% if form.non_field_errors %}
