@@ -1,0 +1,54 @@
+{% extends 'app/base.html' %} 
+{% load static %} 
+{% block title %} 
+  Register
+{% endblock title %}
+
+{% block main-content %}
+    <div class="container">
+        <div class="row my-3">
+            <div class="col-sm-6 offset-sm-3">
+                
+                <h3 class="text-center">Create Account</h3>
+
+                  <!--INVALID/SUCCESS MESSAGE-->
+                  {% if messages %}
+                  {% for msg in messages %}
+                      <div class="alert alert-{{msg.tags}}" role="alert">
+                          {{msg}}
+                      </div>
+                  {% endfor %}
+                  {% endif %}
+                
+                <form action="" method="post" class="shadow p-5" novalidate>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {{field.label_tag}} {{field}}  
+                        <small class="text-danger">
+                            {{field.errors|striptags}}
+                        </small>
+                        <br>
+                    {% endfor %}
+                    <input type="submit" value="Submit" class="btn btn-primary">
+                    <br>
+                    <div class="text-center text-primary fw-bold">
+                        <small>
+                            Already have an account?
+                            <a href="{% url 'login' %}" class="text-danger">
+                                Login
+                            </a>
+                        </small>
+                    </div>
+
+                    <!--DISPLAY ERROR MESSAGE-->
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            <p class="alet alert-danger my-3">{{error}}</p>
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+    <br><br>
+{% endblock main-content %}
