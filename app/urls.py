@@ -3,7 +3,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_view
-from . forms import ForgotPasswordForm
+from . forms import PasswordResetForm, PasswordChangeForm,SetPasswordForm
 
 urlpatterns = [
     path('register/', views.registerPage, name='register'),
@@ -11,9 +11,27 @@ urlpatterns = [
     path('logout/', views.logoutUser, name="logout"),
     path('profile/<int:id>/', views.profilePage, name='profile'),
     path('update-profile/', views.updateProfile, name="update-profile"),
-    path('forgot-password/', auth_view.PasswordResetView.as_view(template_name='app/forgot_password.html',
-         form_class=ForgotPasswordForm), name='forgot-password'),
-
+    
+    # RESET PASSWORD
+    path('password-reset/', auth_view.PasswordResetView.as_view(template_name='app/reset_password.html',
+         form_class=PasswordResetForm), name='password_reset'),
+    
+    path('password-reset/done/', auth_view.PasswordResetDoneView.as_view(template_name='app/reset_password_done.html'), name='password_reset_done'),
+    
+    path('password-reset-confirm/<uidb64>/<token>', auth_view.PasswordResetConfirmView.as_view(template_name='app/reset_password_confirm.html',
+         form_class=SetPasswordForm), name='password_reset_confirm'),
+    
+    path('reset-password-complete/', auth_view.PasswordResetCompleteView.as_view(template_name='app/reset_password_complete.html'), name='password_reset_complete'),
+    
+    
+    
+    #END RESET PASSWORD
+    
+    # CHANGE PASSWORD
+    path('password-change/', auth_view.PasswordChangeView.as_view(template_name='app/password_change.html', form_class=PasswordChangeForm, success_url = '/password-change-complete'), name='password-change'),
+    path('password-change-complete/', auth_view.PasswordChangeDoneView.as_view(template_name='app/password_change_complete.html'), name='change-password-done'),
+    
+    #END PASSWORD RESET
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
