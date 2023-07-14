@@ -55,3 +55,14 @@ class Product(models.Model):
 
     def __str__(self):
         return self.product_title
+    
+    
+# SHOPPING CART
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    
+    @property
+    def total_price(self):
+        return self.quantity * self.product.discounted_price

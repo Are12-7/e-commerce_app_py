@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
-from . models import Product, User
+from . models import Product, User, Cart
 from . forms import RegistrationForm, UserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.db.models import Q
+
 
 
 # REGISTER
@@ -100,17 +102,112 @@ def categoryTitle(req, val):
         category=product[0].category).values('product_title')
     return render(req, "app/category.html", locals())
 
+
+
 # PRODUCT INFORMATION
-
-
 def productDetail(req, pk):
     product = Product.objects.get(pk=pk)
 
     return render(req, "app/product.html", locals())
 
+
+# ADD TO CART 
+def addToCart(req):
+    user = req.user
+    product_id= req.GET.get('prod_id')
+    product = Product.objects.get(id=product_id)
+    Cart(user=user, product=product).save()
+    return redirect('/cart')
+
+
+# SHOW CART
+def showCart(req):
+    user = req.user
+    cart = Cart.objects.filter(user=user)
+    subtotal = 0
+    for prod in cart:
+        total_price = round((prod.quantity * prod.product.discounted_price),2)
+        subtotal = round((subtotal + total_price),2)
+        shipping_price = 6.99
+        tax = round((subtotal + shipping_price) * (0.13),2)
+    final_price = round((subtotal + shipping_price + tax),2)
+    return render(req,'app/add_to_cart.html', locals())
+
+# PLUS BUTTON
+def plusCart(request):
+    if request.method == 'GET':
+        prod_id = request.GET['prod_id']
+        c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.quantity += 1
+        c.save()
+        user = request.user
+        cart = Cart.objects.filter(user=user)
+        subtotal = 0
+        for prod in cart:
+            total_price = round((prod.quantity * prod.product.discounted_price),2)
+            subtotal = round((subtotal + total_price),2)
+            shipping_price = 6.99
+            tax = round((subtotal + shipping_price) * (0.13),2)
+        final_price = round((subtotal + shipping_price + tax),2)
+        data = {
+            'quantity': c.quantity,
+            'subtotal': subtotal,
+            'tax':tax,
+            'final_price': final_price
+        }
+        return JsonResponse(data)
+
+# MINUS BUTTON 
+def minusCart(request):
+    if request.method == 'GET':
+        prod_id = request.GET['prod_id']
+        c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.quantity -= 1
+        c.save()
+        user = request.user
+        cart = Cart.objects.filter(user=user)
+        subtotal = 0
+        for prod in cart:
+            total_price = round((prod.quantity * prod.product.discounted_price),2)
+            subtotal = round((subtotal + total_price),2)
+            shipping_price = 6.99
+            tax = round((subtotal + shipping_price) * (0.13),2)
+        final_price = round((subtotal + shipping_price + tax),2)
+        data = {
+            'quantity': c.quantity,
+            'subtotal': subtotal,
+            'tax':tax,
+            'final_price': final_price
+        }
+        return JsonResponse(data)       
+
+# REMOVE BUTTON
+def removeCart(request):
+    if request.method == 'GET':
+        prod_id = request.GET['prod_id']
+        c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.delete()
+        user = request.user
+        cart = Cart.objects.filter(user=user)
+        subtotal = 0
+        for prod in cart:
+            total_price = round((prod.quantity * prod.product.discounted_price),2)
+            subtotal = round((subtotal + total_price),2)
+            shipping_price = 6.99
+            tax = round((subtotal + shipping_price) * (0.13),2)
+        final_price = round((subtotal + shipping_price + tax),2)
+        data = {
+            'quantity': c.quantity,
+            'subtotal': subtotal,
+            'tax':tax,
+            'final_price': final_price
+        }
+        return JsonResponse(data)       
+
+
+
+
 #  ABOUT
-
-
 def about(req):
     return render(req, "app/about.html")
 

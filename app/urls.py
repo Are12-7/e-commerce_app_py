@@ -22,20 +22,24 @@ urlpatterns = [
          form_class=SetPasswordForm), name='password_reset_confirm'),
     
     path('reset-password-complete/', auth_view.PasswordResetCompleteView.as_view(template_name='app/reset_password_complete.html'), name='password_reset_complete'),
-    
-    
-    
+ 
     #END RESET PASSWORD
     
     # CHANGE PASSWORD
     path('password-change/', auth_view.PasswordChangeView.as_view(template_name='app/password_change.html', form_class=PasswordChangeForm, success_url = '/password-change-complete'), name='password-change'),
     path('password-change-complete/', auth_view.PasswordChangeDoneView.as_view(template_name='app/password_change_complete.html'), name='change-password-done'),
-    
-    #END PASSWORD RESET
+    # END CHANGE PASSWORD
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     path('category/<slug:val>', views.category, name='category'),
     path('category-title/<val>', views.categoryTitle, name='category-title'),
     path('product-detail/<int:pk>', views.productDetail, name='product-detail'),
+    # SHOPPING CART
+    path('add-to-cart/', views.addToCart, name='add-to-cart'),
+    path('cart/', views.showCart, name='cart'),
+    path('checkout/', views.showCart, name='checkout'),
+    path('plus-cart/', views.plusCart),
+    path('minus-cart/', views.minusCart),
+    path('remove-cart/', views.removeCart),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
