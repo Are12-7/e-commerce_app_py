@@ -6,6 +6,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Q
+import stripe
+from django.conf import settings
+from django.views import View
+
 
 
 
@@ -87,7 +91,16 @@ def updateProfile(request):
 def home(req):
     return render(req, "app/home.html")
 
+#  ABOUT
+def about(req):
+    return render(req, "app/about.html")
 
+
+# CONTACT
+def contact(req):
+    return render(req, "app/contact.html")
+
+# CATEGORY 
 def category(req, val):
     product = Product.objects.filter(category=val)
     product_title = Product.objects.filter(
@@ -205,13 +218,70 @@ def removeCart(request):
         return JsonResponse(data)       
 
 
+'''
+def checkout(req):
+    user = req.user
+    cart_items = Cart.objects.filter(user=user)
+    checkout_subtotal = 0
+    for p in cart_items:
+        total_price = round((p.quantity * p.product.discounted_price),2)
+        checkout_subtotal = round((checkout_subtotal + total_price),2)
+        shipping_price = 6.99
+        tax = round((checkout_subtotal + shipping_price) * (0.13),2)
+    final_price = round((checkout_subtotal + shipping_price + tax),2)
+    return render(req, "app/checkout.html", locals())
+
+'''
+stripe.api_key = settings.STRIPE_SECRET_KEY
+# CHECKOUT
+def checkout(request):
+    user = request.user
+    cart_items = Cart.objects.filter(user=user)
+    checkout_items = []
+    checkout_subtotal = 0
+    for p in cart_items:
+        total_price = round((p.quantity * p.product.discounted_price),2)
+        checkout_subtotal = round((checkout_subtotal + total_price),2)
+        checkout_item = {
+            'price_data': {
+                'currency': 'usd',
+                'unit_amount': int(p.product.discounted_price * 100),
+                'product_data': {
+                    'name': p.product.product_title,
+                },
+            },
+            'quantity': p.quantity,
+        }
+        checkout_items.append(checkout_item)
+    shipping_price = 6.99
+    tax = round((checkout_subtotal + shipping_price) * (0.13),2)
+    final_price = round((checkout_subtotal + shipping_price + tax),2)
+
+    checkout_session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=checkout_items,
+        mode='payment',
+        success_url='http://localhost:8000/success/',
+        cancel_url= 'http://localhost:8000/cancel/',
+    )
+
+    context = {
+        'checkout_session_id': checkout_session.id,
+        'product_title': p.product.product_title,
+        'quantity': p.quantity,
+        'total_price': total_price,
+        'final_price': final_price,
+        'shipping_price': shipping_price,
+        'tax': tax,
+    }
+    return render(request, 'app/checkout.html', context)
 
 
-#  ABOUT
-def about(req):
-    return render(req, "app/about.html")
+
+    
 
 
-# CONTACT
-def contact(req):
-    return render(req, "app/contact.html")
+
+
+
+

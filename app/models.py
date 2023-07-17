@@ -1,22 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-PROVINCE_OPTIONS = (
-    ('Alberta', 'AL'),
-    ('British Columbia', 'BC'),
-    ('Manitoba', 'MB'),
-    ('New Brunswick', 'NB'),
-    ('Newfoundland and Labrador', 'NL'),
-    ('Nova Scotia', 'NS'),
-    ('Ontario', 'ON'),
-    ('Prince Edward Island', 'PE'),
-    ('Quebec', 'QC'),
-    ('Saskatchewan', 'SK'),
-    ('Northwest Territories', 'NT'),
-    ('Nunavut', 'NU'),
-    ('Yukon', 'YT'),
-)
-
 CATEGORY_OPTIONS = (
     ('CR', 'Curd'),
     ('ML', 'Milk'),
@@ -28,9 +12,9 @@ CATEGORY_OPTIONS = (
     ('IC', 'Ice-Creams'),
 )
 
+
+
 # USER
-
-
 class User(AbstractUser):
     username = models.CharField(max_length=8, null=True)
     first_name = models.CharField(max_length=80, null=True)
@@ -66,3 +50,7 @@ class Cart(models.Model):
     @property
     def total_price(self):
         return self.quantity * self.product.discounted_price
+    
+
+
+    

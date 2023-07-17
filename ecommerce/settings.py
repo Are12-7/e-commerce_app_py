@@ -128,3 +128,8 @@ LOGIN_REDIRECT_URL = '/profile/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# STRIPE
+STRIPE_PUBLIC_KEY = 'sk_test_51NUEzaD5ocDW6HSB4CX2NFYSanXthlrg7nU1VvW8nOGxW1hTG4rx8dg1Oy6Ts8XskpcsEihBQU41cxwT105Pe5Uj00nGgiKbzN'
+STRIPE_SECRET_KEY = 'sk_test_Gx4mWEgHtCMr4DYMUIqfIrsz'
+STRIPE_WEBHOOK_SECRET = ''

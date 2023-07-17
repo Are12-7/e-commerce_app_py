@@ -1,0 +1,61 @@
+{% extends 'app/base.html' %} 
+{% load static %} 
+{% block title %} 
+    Checkout
+{% endblock title %}
+
+{% block main-content %}
+<div class="container">
+    <!--INVALID/SUCCESS MESSAGE-->
+    {% if messages %}
+    {% for msg in messages %}
+        <div class="alert alert-{{msg.tags}}" role="alert">
+            {{msg}}
+        </div>
+    {% endfor %}
+    {% endif %}
+    <div class="row mt-5">
+        <div class="col-sm-6">
+            <h4>Order Summary</h4>
+            <hr>
+            
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5>Product: {{product_title}} </h5>
+                    <p class="fw-bold">Quantity: {{quantity}}</p>
+                    <p class="fw-bold">Price: ${{total_price}}</p>
+                    <p class="fw-bold">Shipping: ${{shipping_price}}</p>
+                    <p class="fw-bold">Tax (13%): ${{tax}}</p>
+                </div>
+            </div>
+            
+            <p class="fw-bold">Total = ${{final_price}}</p>
+            <small>Term and Condition: Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia velit reiciendis aliquid repudiandae soluta id dolores ipsa in reprehenderit similique, voluptas omnis quisquam.</small>
+        </div>
+        <div class="col-sm-4 offset-sm-1">
+            <h4>Review Information</h4>
+            <hr>
+                <div class="card">
+                    <div class="card-body">
+                        <h5>{{request.user.first_name}} {{request.user.last_name}}</h5>
+                        <p>Phone: {{request.user.phone}}</p>
+                        <p>Email: {{request.user.email}}</p>
+                        <p>Address: {{request.user.address}}</p>
+                    </div>
+                </div>
+                <div class="form-check mb-3">
+                    <label for="final_price" class="form-label">Total Amount</label>
+                    <input type="number" class="form-control" name="final_price" value={{final_price}} readonly>
+                </div>
+                <div class="text-end">
+                    <form action="" method="post" id="myform">
+                        {% csrf_token %}
+                        <input type="hidden" name="prod_id" value={{product.id}}>
+                        <button  type="submit" id="checkout-button" class="btn btn-warning mt-3 px-5 fw-bold">Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock main-content %}
