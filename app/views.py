@@ -218,23 +218,9 @@ def removeCart(request):
         return JsonResponse(data)       
 
 
-'''
-def checkout(req):
-    user = req.user
-    cart_items = Cart.objects.filter(user=user)
-    checkout_subtotal = 0
-    for p in cart_items:
-        total_price = round((p.quantity * p.product.discounted_price),2)
-        checkout_subtotal = round((checkout_subtotal + total_price),2)
-        shipping_price = 6.99
-        tax = round((checkout_subtotal + shipping_price) * (0.13),2)
-    final_price = round((checkout_subtotal + shipping_price + tax),2)
-    return render(req, "app/checkout.html", locals())
-
-'''
 stripe.api_key = settings.STRIPE_SECRET_KEY
 # CHECKOUT
-def checkout(request):
+def checkout_session(request):
     user = request.user
     cart_items = Cart.objects.filter(user=user)
     checkout_items = []
@@ -256,25 +242,28 @@ def checkout(request):
     shipping_price = 6.99
     tax = round((checkout_subtotal + shipping_price) * (0.13),2)
     final_price = round((checkout_subtotal + shipping_price + tax),2)
+    
+    if request.method == 'POST':
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=checkout_items,
+            mode='payment',
+            success_url='http://localhost:8000/success/',
+            cancel_url= 'http://localhost:8000/cancel/',
+        )
 
-    checkout_session = stripe.checkout.Session.create(
-        payment_method_types=['card'],
-        line_items=checkout_items,
-        mode='payment',
-        success_url='http://localhost:8000/success/',
-        cancel_url= 'http://localhost:8000/cancel/',
-    )
+        context = {
+            'checkout_session_id': checkout_session.id,
+            'product_title': p.product.product_title,
+            'quantity': p.quantity,
+            'total_price': total_price,
+            'final_price': final_price,
+            'shipping_price': shipping_price,
+            'tax': tax,
+        }
+        return redirect(checkout_session.url, code=303)
+    return render(request, "app/checkout.html", locals())
 
-    context = {
-        'checkout_session_id': checkout_session.id,
-        'product_title': p.product.product_title,
-        'quantity': p.quantity,
-        'total_price': total_price,
-        'final_price': final_price,
-        'shipping_price': shipping_price,
-        'tax': tax,
-    }
-    return render(request, 'app/checkout.html', context)
 
 
 

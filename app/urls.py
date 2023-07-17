@@ -39,8 +39,8 @@ urlpatterns = [
     path('add-to-cart/', views.addToCart, name='add-to-cart'),
     path('cart/', views.showCart, name='cart'),
     #CHECKOUT
-    path('checkout/', views.checkout, name='checkout'),
-    #path('create-checkout-session/<pk>', views.CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
+    path('checkout/', views.checkout_session, name='checkout'),
+    #path('checkout-session/', views.checkout_session(), name='checkout-session'),
 
     
     path('plus-cart/', views.plusCart),

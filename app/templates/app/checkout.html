@@ -48,10 +48,9 @@
                     <input type="number" class="form-control" name="final_price" value={{final_price}} readonly>
                 </div>
                 <div class="text-end">
-                    <form action="" method="post" id="myform">
+                    <form action="" method="POST">
                         {% csrf_token %}
-                        <input type="hidden" name="prod_id" value={{product.id}}>
-                        <button  type="submit" id="checkout-button" class="btn btn-warning mt-3 px-5 fw-bold">Payment</button>
+                        <button href="{% url 'checkout' %}" type="submit" id="checkout-button">Payment</button>
                     </form>
                 </div>
             </div>
