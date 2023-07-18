@@ -21,15 +21,15 @@
             
             <div class="card mb-2">
                 <div class="card-body">
-                    <h5>Product: {{product_title}} </h5>
-                    <p class="fw-bold">Quantity: {{quantity}}</p>
-                    <p class="fw-bold">Price: ${{total_price}}</p>
-                    <p class="fw-bold">Shipping: ${{shipping_price}}</p>
-                    <p class="fw-bold">Tax (13%): ${{tax}}</p>
+                    <h5>Product: {{item.product.product_title}} </h5>
+                    <p class="fw-bold">Quantity: {{item.quantity}}</p>
+                    <p class="fw-bold">Price: ${{cart_total}}</p>
+                    <p class="fw-bold">Shipping: ${{shipping_cost}}</p>
+                    <p class="fw-bold">Tax (13%): {{tax_rate}}</p>
                 </div>
             </div>
             
-            <p class="fw-bold">Total = ${{final_price}}</p>
+            <p class="fw-bold">Total = ${{total_amount}}</p>
             <small>Term and Condition: Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia velit reiciendis aliquid repudiandae soluta id dolores ipsa in reprehenderit similique, voluptas omnis quisquam.</small>
         </div>
         <div class="col-sm-4 offset-sm-1">
@@ -50,7 +50,7 @@
                 <div class="text-end">
                     <form action="" method="POST">
                         {% csrf_token %}
-                        <button href="{% url 'checkout' %}" type="submit" id="checkout-button">Payment</button>
+                        <button href="{% url 'checkout' %}" type="submit" id="checkout-button" class="btn btn-warning">Payment</button>
                     </form>
                 </div>
             </div>

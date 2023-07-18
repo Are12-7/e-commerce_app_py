@@ -46,10 +46,12 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    
-    @property
-    def total_price(self):
-        return self.quantity * self.product.discounted_price
+
+# CHECKOUT
+class CheckoutSession(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    total_amount = models.DecimalField(max_digits=8, decimal_places=2)
+    stripe_session_id = models.CharField(max_length=255)
     
 
 

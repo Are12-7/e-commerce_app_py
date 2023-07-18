@@ -224,24 +224,25 @@ def checkout_session(request):
     user = request.user
     cart_items = Cart.objects.filter(user=user)
     checkout_items = []
-    checkout_subtotal = 0
-    for p in cart_items:
-        total_price = round((p.quantity * p.product.discounted_price),2)
-        checkout_subtotal = round((checkout_subtotal + total_price),2)
+    cart_total = 0
+    for item in cart_items:
+        cart_total += item.product.discounted_price * item.quantity
+        shipping_cost = 6.99
+        tax_rate = round(((cart_total +shipping_cost)*0.13),2)
+        total_amount = round(cart_total + shipping_cost + tax_rate, 2)
+    
+
         checkout_item = {
             'price_data': {
                 'currency': 'usd',
-                'unit_amount': int(p.product.discounted_price * 100),
+                'unit_amount': round((total_amount / item.quantity)*100),
                 'product_data': {
-                    'name': p.product.product_title,
+                    'name': item.product.product_title,
                 },
             },
-            'quantity': p.quantity,
+            'quantity': item.quantity,
         }
         checkout_items.append(checkout_item)
-    shipping_price = 6.99
-    tax = round((checkout_subtotal + shipping_price) * (0.13),2)
-    final_price = round((checkout_subtotal + shipping_price + tax),2)
     
     if request.method == 'POST':
         checkout_session = stripe.checkout.Session.create(
@@ -254,12 +255,12 @@ def checkout_session(request):
 
         context = {
             'checkout_session_id': checkout_session.id,
-            'product_title': p.product.product_title,
-            'quantity': p.quantity,
-            'total_price': total_price,
-            'final_price': final_price,
-            'shipping_price': shipping_price,
-            'tax': tax,
+            'product_title': item.product.product_title,
+            'quantity': item.quantity,
+            'cart_total': cart_total,
+            'total_amount': total_amount,
+            'shipping_cost': shipping_cost,
+            'tax_rate': tax_rate,
         }
         return redirect(checkout_session.url, code=303)
     return render(request, "app/checkout.html", locals())
