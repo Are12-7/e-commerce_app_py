@@ -138,6 +138,8 @@ def showCart(req):
     user = req.user
     cart = Cart.objects.filter(user=user)
     subtotal = 0
+    tax = 0
+    shipping_price = 0
     for prod in cart:
         total_price = round((prod.quantity * prod.product.discounted_price),2)
         subtotal = round((subtotal + total_price),2)
@@ -249,8 +251,8 @@ def checkout_session(request):
             payment_method_types=['card'],
             line_items=checkout_items,
             mode='payment',
-            success_url='http://localhost:8000/success/',
-            cancel_url= 'http://localhost:8000/cancel/',
+            success_url='http://localhost:8000/success',
+            cancel_url= 'http://localhost:8000/cancel',
         )
 
         context = {
@@ -264,6 +266,17 @@ def checkout_session(request):
         }
         return redirect(checkout_session.url, code=303)
     return render(request, "app/checkout.html", locals())
+
+
+def SuccessfulPayment(request):
+    user = request.user
+    cart = Cart.objects.filter(user=user)
+    cart.delete()
+    return render(request, 'app/success.html')
+
+
+def CancelPayment(request):
+    return render(request, 'app/cancel.html')
 
 
 

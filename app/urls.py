@@ -38,12 +38,14 @@ urlpatterns = [
     # SHOPPING CART
     path('add-to-cart/', views.addToCart, name='add-to-cart'),
     path('cart/', views.showCart, name='cart'),
-    #CHECKOUT
-    path('checkout/', views.checkout_session, name='checkout'),
-    #path('checkout-session/', views.checkout_session(), name='checkout-session'),
-
-    
     path('plus-cart/', views.plusCart),
     path('minus-cart/', views.minusCart),
     path('remove-cart/', views.removeCart),
+    #CHECKOUT
+    path('checkout/', views.checkout_session, name='checkout'),
+    path('cancel/', views.CancelPayment, name='cancel'),
+    path('success/', views.SuccessfulPayment, name='success'),
+
+    
+
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
