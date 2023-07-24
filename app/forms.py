@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, SetPasswordForm, PasswordResetForm
-from .models import User
+from .models import User, Contact
 from django.forms import ModelForm
 
 
@@ -33,3 +33,7 @@ class SetPasswordForm(SetPasswordForm):
     new_password2 = forms.CharField(label='Confirm New Password', widget=forms.PasswordInput(attrs={'autocomplete':'current-password', 'class':'form-control'}))
     
     
+class ContactForm(ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['full_name', 'email', 'subject', 'message']

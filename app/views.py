@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from . models import Product, User, Cart
-from . forms import RegistrationForm, UserForm
+from . models import Product, User, Cart, Orders
+from . forms import RegistrationForm, UserForm, ContactForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -23,7 +23,7 @@ def registerPage(req):
             user.username = user.username.lower()
             user.save()
             login(req, user)
-            return redirect('home') # CHANGE TO LOGIN
+            return redirect('home') 
         else:
             messages.warning(req, 'Invalid Input Data')
             
@@ -98,7 +98,20 @@ def about(req):
 
 # CONTACT
 def contact(req):
-    return render(req, "app/contact.html")
+    form = ContactForm()
+    if req.method == 'POST':
+        form = ContactForm(req.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success-message') 
+        else:
+            messages.warning(req, 'Invalid Input Data')
+    return render(req, 'app/contact.html', locals())
+
+
+# MESSAGE RECEIVED 
+def contactMessage(request):
+    return render(request, 'app/success_message.html')
 
 # CATEGORY 
 def category(req, val):
@@ -124,7 +137,8 @@ def productDetail(req, pk):
     return render(req, "app/product.html", locals())
 
 
-# ADD TO CART 
+# ADD TO CART
+@login_required(login_url='login')
 def addToCart(req):
     user = req.user
     product_id= req.GET.get('prod_id')
@@ -134,6 +148,7 @@ def addToCart(req):
 
 
 # SHOW CART
+@login_required(login_url='login')
 def showCart(req):
     user = req.user
     cart = Cart.objects.filter(user=user)
@@ -149,6 +164,7 @@ def showCart(req):
     return render(req,'app/add_to_cart.html', locals())
 
 # PLUS BUTTON
+@login_required(login_url='login')
 def plusCart(request):
     if request.method == 'GET':
         prod_id = request.GET['prod_id']
@@ -173,6 +189,7 @@ def plusCart(request):
         return JsonResponse(data)
 
 # MINUS BUTTON 
+@login_required(login_url='login')
 def minusCart(request):
     if request.method == 'GET':
         prod_id = request.GET['prod_id']
@@ -197,6 +214,7 @@ def minusCart(request):
         return JsonResponse(data)       
 
 # REMOVE BUTTON
+@login_required(login_url='login')
 def removeCart(request):
     if request.method == 'GET':
         prod_id = request.GET['prod_id']
@@ -222,6 +240,7 @@ def removeCart(request):
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 # CHECKOUT
+@login_required(login_url='login')
 def checkout_session(request):
     user = request.user
     cart_items = Cart.objects.filter(user=user)
@@ -232,7 +251,6 @@ def checkout_session(request):
         shipping_cost = 6.99
         tax_rate = round(((cart_total +shipping_cost)*0.13),2)
         total_amount = round(cart_total + shipping_cost + tax_rate, 2)
-    
 
         checkout_item = {
             'price_data': {
@@ -245,7 +263,7 @@ def checkout_session(request):
             'quantity': item.quantity,
         }
         checkout_items.append(checkout_item)
-    
+        
     if request.method == 'POST':
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
@@ -254,17 +272,20 @@ def checkout_session(request):
             success_url='http://localhost:8000/success',
             cancel_url= 'http://localhost:8000/cancel',
         )
+        
+        # Save checkout session details to the database
+        orders = Orders.objects.create(
+            session_id=checkout_session.id,
+            product_title=item.product.product_title,
+            quantity=item.quantity,
+            cart_total=cart_total,
+            total_amount=total_amount,
+            shipping_cost=shipping_cost,
+            tax_rate=tax_rate
+        )
 
-        context = {
-            'checkout_session_id': checkout_session.id,
-            'product_title': item.product.product_title,
-            'quantity': item.quantity,
-            'cart_total': cart_total,
-            'total_amount': total_amount,
-            'shipping_cost': shipping_cost,
-            'tax_rate': tax_rate,
-        }
         return redirect(checkout_session.url, code=303)
+
     return render(request, "app/checkout.html", locals())
 
 
@@ -279,6 +300,10 @@ def CancelPayment(request):
     return render(request, 'app/cancel.html')
 
 
+# ORDERS
+def OrdersDetail(request):
+    orders = Orders.objects.all()
+    return render(request, 'app/orders.html', locals())
 
 
     

@@ -1,0 +1,59 @@
+
+{% extends 'app/base.html' %}
+
+{% block title %} Orders {% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+  <h1 class="text-center mb-5">My Orders</h1>
+  <div class="row">
+    {% if orders %}
+      <div class="col-md-8 offset-md-2">
+        <div class="card">
+          <div class="card-body">
+
+            <!-- Order details -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Quantity</th>
+                  <th>Subtotal</th>
+                  <th>Shipping</th>
+                  <th>Tax (13%)</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in orders %}
+                <tr>
+                  <td>{{ order.product_title }}</td>
+                  <td>{{ order.quantity }}</td>
+                  <td>${{ order.cart_total }}</td>
+                  <td>${{ order.tax_rate }}</td>
+                  <td>${{ order.shipping_cost }}</td>
+                  <td>${{ orders.0.total_amount }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            <!-- Total -->
+            <div class="invoice-total">
+              <p class="total-amount">
+                
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <h1 class="text-center mb-5">Empty</h1>
+      <iframe src="https://giphy.com/embed/Phna8ImVFWEqxPUIfk" width="480" height="480" frameborder="0" class="giphy-embed" allowfullscreen></iframe>
+      <p>
+        <a href="https://giphy.com/gifs/safefood-shopping-trolley-Phna8ImVFWEqxPUIfk"></a>
+      </p>
+    {% endif %}
+  </div>
+</div>
+{% endblock main-content %}

@@ -1,51 +1,90 @@
-{% extends 'app/base.html' %} 
-{% load static %} 
-{% block title %} 
-  Login
-{% endblock title %}
+{% extends 'app/base.html' %} {% load static %} {% block title %} Login 
+{% endblock title %} {% block main-content %}
+<br><br>
+<style>
+    .container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .form-container {
+      flex-basis: 50%;
+    }
+    
+    .img-container {
+      flex-basis: 50%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      margin-right: 20px;
+    }
+    
+    .form-container form {
+      width: 100%;
+    }
+    
+    .img-container img {
+      height: 400px; /* Adjust the height as per your requirements */
+      width: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    </style>
 
-{% block main-content %}
-    <div class="container">
-        <div class="row my-3">
-            <div class="col-sm-6 offset-sm-3">
-                
-                <h3 class="text-center">Login</h3>
+<div class="container">
+    <div class="img-container">
+        <img src='{% static "app/images/login.jpg" %}' alt="Example Image">
+      </div>
+      <!--INVALID/SUCCESS MESSAGE-->
+      {% if messages %} {% for msg in messages %}
+      <div class="alert alert-{{msg.tags}}" role="alert">{{msg}}</div>
+      {% endfor %} {% endif %}
 
-                  <!--INVALID/SUCCESS MESSAGE-->
-                  {% if messages %}
-                  {% for msg in messages %}
-                      <div class="alert alert-{{msg.tags}}" role="alert">
-                          {{msg}}
-                      </div>
-                  {% endfor %}
-                  {% endif %}
-                
-                <form action="" method="post" class="shadow p-5" novalidate>
-                    {% csrf_token %}
-                    <label>Email: </label>
-                    <input type="text" name="email" placeholder="Enter email"/>
-                    <br><br>
-                    <label>Password: </label>
-                    <input type="password" name="password" placeholder="Enter password"/> 
-                    <!--FORGOT PASSWORD-->
-                    <br>
-                    <small>
-                        <a href="{% url 'password_reset' %}">Forgot Password</a>
-                    </small>
-                    <br>
-                    <input type="submit" value="Login" class="btn btn-primary mt-4">
-                    <br>
-                    <div class="text-center text-primary fw-bold">
-                        <small>
-                            Do not have an account yet?
-                            <a href="{% url 'register' %}" class="text-danger">
-                                Create Account
-                            </a>
-                        </small>
-                    </div>
-                </form>
+        <div class="form-container">
+          <form
+            action=""
+            method="post"
+            class="shadow p-5 bg-body-secondary"
+            novalidate
+          >
+            {% csrf_token %}
+            <h3 class="text-center">Login</h3>
+            <div class="mb-3">
+              <label for="{{ field.id_for_label }}" class="form-label"
+                >Email:</label
+              >
+              <div class="input-group justify-content-center">
+                <input type="text" name="email" placeholder="Enter email" />
+              </div>
+              <small class="d-block text-danger my-2"
+                >{{ field.errors|striptags }}</small
+              >
+              <label for="{{ field.id_for_label }}" class="form-label "
+              >Password:</label
+            >
+            <div class="input-group justify-content-center">
+                <input type="password" name="password" placeholder="Enter password"/>
             </div>
         </div>
-    </div>
-    <br><br>
-{% endblock main-content %}
+            <!--FORGOT PASSWORD-->
+            <small>
+              <a href="{% url 'password_reset' %}">Forgot Password</a>
+            </small>
+            <br />
+            <input type="submit" value="Login" class="btn btn-primary mt-4" />
+            <br />
+            <div class="text-center text-primary fw-bold">
+              <small>
+                Do not have an account yet?
+                <a href="{% url 'register' %}" class="text-danger">
+                  Create Account
+                </a>
+              </small>
+            </div>
+          </form>
+        </div>
+      </div>
+    
+    <br /><br />
+    {% endblock main-content %}
+

@@ -2,14 +2,12 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 CATEGORY_OPTIONS = (
-    ('CR', 'Curd'),
-    ('ML', 'Milk'),
-    ('LS', 'Lassi'),
-    ('MS', 'Milkshake'),
-    ('PN', 'Paneer'),
-    ('GH', 'Ghee'),
-    ('CZ', 'Cheese'),
-    ('IC', 'Ice-Creams'),
+    ('TS', 'Shirts'), # 'ML', 'Milk'
+    ('JR', 'Jersey'), # 'JR', 'Lassi'
+    ('CP', 'Cap'), # 'CP', 'Cap'
+    ('HD', 'Hoodie'), # 'HD', 'Hoodie'
+    ('JS','Jogger'),
+    ('JK','Jacket'),
 )
 
 
@@ -47,11 +45,31 @@ class Cart(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
 
+  
+    
 # CHECKOUT
-class CheckoutSession(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    total_amount = models.DecimalField(max_digits=8, decimal_places=2)
-    stripe_session_id = models.CharField(max_length=255)
+class Orders(models.Model):
+    session_id = models.CharField(max_length=200)
+    product_title = models.CharField(max_length=100)
+    quantity = models.PositiveIntegerField()
+    cart_total = models.FloatField()
+    total_amount = models.FloatField()
+    shipping_cost = models.FloatField()
+    tax_rate = models.FloatField()
+    
+    def __str__(self):
+        return self.session_id
+    
+    
+# CONTACT FORM
+class Contact(models.Model):
+    full_name = models.CharField(max_length=150)
+    email = models.EmailField(unique=True, null=True)
+    subject = models.CharField(max_length=80)
+    message = models.TextField(default='')
+    
+    def __str__(self):
+        return self.full_name
     
 
 

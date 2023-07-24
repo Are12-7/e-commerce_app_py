@@ -1,5 +1,4 @@
-{% extends 'app/base.html' %} {% load static %} {% block title %} Home 
-{% endblock title %}
+{% extends 'app/base.html' %} {% load static %} {% block title %} Home {% endblock title %}
 
 <!-- BANNER-->
 {% block banner-slider %}
@@ -7,7 +6,7 @@
   <div class="carousel-inner">
     <div class="carousel-item active">
       <img
-        src="{% static 'app/images/banner/b1.jpg'%}"
+        src="{% static 'app/images/banner/banner_1.jpg'%}"
         class="d-block w-100"
         alt="..."
       />
@@ -20,7 +19,7 @@
     </div>
     <div class="carousel-item">
       <img
-        src="{% static 'app/images/banner/b2.jpg'%}"
+        src="{% static 'app/images/banner/banner_2.jpg'%}"
         class="d-block w-100"
         alt="..."
       />
@@ -33,7 +32,7 @@
     </div>
     <div class="carousel-item">
       <img
-        src="{% static 'app/images/banner/b3.jpg'%}"
+        src="{% static 'app/images/banner/banner_3.jpg'%}"
         class="d-block w-100"
         alt="..."
       />
@@ -46,7 +45,7 @@
     </div>
     <div class="carousel-item">
       <img
-        src="{% static 'app/images/banner/b4.jpg'%}"
+        src="{% static 'app/images/banner/banner_4.jpg'%}"
         class="d-block w-100"
         alt="..."
       />
@@ -119,14 +118,14 @@
       "
     >
       <div class="goodnesssec buttermilk smbg">
-        <a href="{% url 'category' 'GH' %}">
+        <a href="{% url 'category' 'JR' %}">
           <div class="goodnessseccont text-center">
             <img
-              src="{% static 'app/images/product/buffalo-ghee.png' %}"
+              src="{% static 'app/images/product/jersey-4.PNG' %}"
               class="img-responsive center-block"
               alt=""
             />
-            <p class="mlkpro">Ghee</p>
+            <p class="mlkpro">Jersey</p>
           </div>
         </a>
       </div>
@@ -142,121 +141,126 @@
         animation-name: none;
       "
     >
-      <div class="goodnesssec buttermilk curdbgpro">
-        <a href="{% url 'category' 'CR' %}">
-          <div class="goodnessseccont text-center">
-            <img
-              src="{% static 'app/images/product/curd-total.png' %}"
-              class="img-responsive center-block"
-              alt=""
-            />
-            <p class="mlkpro">CURD</p>
-          </div>
-        </a>
-      </div>
-    </div>
-
-    <div
-      class="col-md-4 col-sm-4 mi-go wow fadeInUp"
-      data-wow-duration="1s"
-      data-wow-delay="0.6s"
-      style="
-        animation-duration: 1s;
-        animation-delay: 0.6s;
-        animation-name: none;
-      "
-    >
-      <div class="goodnesssec buttermilk buttermilk">
-        <a href="{% url 'category' 'IC' %}">
-          <div class="goodnessseccont text-center">
-            <img
-              src="{% static 'app/images/product/kulfi.png' %}"
-              class="img-responsive center-block"
-              alt=""
-            />
-            <p class="mlkpro">Ice-creams</p>
-          </div>
-        </a>
-      </div>
+    <div class="goodnesssec buttermilk smbg">
+      <a href="{% url 'category' 'HD' %}">
+        <div class="goodnessseccont text-center">
+          <img
+            src="{% static 'app/images/product/hoodie-1.PNG' %}"
+            class="img-responsive center-block"
+            alt=""
+          />
+          <p class="mlkpro">Hoodie</p>
+        </div>
+      </a>
     </div>
   </div>
 
-  <!--2nd ROW OUR PRODUCTS-->
-  <br /><br />
-  <div class="row container">
-    <div
-      class="col-md-4 col-sm-4 mi-go wow fadeInUp"
-      data-wow-duration="1s"
-      data-wow-delay="0.6s"
-      style="
-        animation-duration: 1s;
-        animation-delay: 0.6s;
-        animation-name: none;
-      "
-    >
-      <div class="goodnesssec buttermilk smbg">
-        <a href="{% url 'category' 'MS' %}">
-          <div class="goodnessseccont text-center">
-            <img
-              src="{% static 'app/images/product/milk-shake-chocolate.png' %}"
-              class="img-responsive center-block"
-              alt=""
-            />
-            <p class="mlkpro">Milkshake</p>
-          </div>
-        </a>
-      </div>
+  <div
+  class="col-md-4 col-sm-4 mi-go wow fadeInUp"
+  data-wow-duration="1s"
+  data-wow-delay="0.6s"
+  style="
+    animation-duration: 1s;
+    animation-delay: 0.6s;
+    animation-name: none;
+  "
+>
+<div class="goodnesssec buttermilk smbg">
+  <a href="{% url 'category' 'JS' %}">
+    <div class="goodnessseccont text-center">
+      <img
+        src="{% static 'app/images/product/js-1.PNG' %}"
+        class="img-responsive center-block"
+        alt=""
+      />
+      <p class="mlkpro">Jogger Suit</p>
     </div>
-
-    <div
-      class="col-md-4 col-sm-4 mi-go wow fadeInUp"
-      data-wow-duration="1s"
-      data-wow-delay="0.6s"
-      style="
-        animation-duration: 1s;
-        animation-delay: 0.6s;
-        animation-name: none;
-      "
-    >
-      <div class="goodnesssec buttermilk curdbgpro">
-        <a href="{% url 'category' 'ML' %}">
-          <div class="goodnessseccont text-center">
-            <img
-              src="{% static 'app/images/product/cow-milk.png' %}"
-              class="img-responsive center-block"
-              alt=""
-            />
-            <p class="mlkpro">Milk</p>
-          </div>
-        </a>
-      </div>
-    </div>
-
-    <div
-      class="col-md-4 col-sm-4 mi-go wow fadeInUp"
-      data-wow-duration="1s"
-      data-wow-delay="0.6s"
-      style="
-        animation-duration: 1s;
-        animation-delay: 0.6s;
-        animation-name: none;
-      "
-    >
-      <div class="goodnesssec buttermilk buttermilk">
-        <a href="{% url 'category' 'IC' %}">
-          <div class="goodnessseccont text-center">
-            <img
-              src="{% static 'app/images/product/icbars.png' %}"
-              class="img-responsive center-block"
-              alt=""
-            />
-            <p class="mlkpro">Icebar</p>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
+  </a>
+</div>
 </div>
 
-<br /><br />
-{% endblock main-content %}
+
+
+     
+    </div>
+
+    <!--2nd ROW OUR PRODUCTS-->
+    <br /><br />
+    <div class="row container">
+      <div
+        class="col-md-4 col-sm-4 mi-go wow fadeInUp"
+        data-wow-duration="1s"
+        data-wow-delay="0.6s"
+        style="
+          animation-duration: 1s;
+          animation-delay: 0.6s;
+          animation-name: none;
+        "
+      >
+        <div class="goodnesssec buttermilk smbg">
+          <a href="{% url 'category' 'CP' %}">
+            <div class="goodnessseccont text-center">
+              <img
+                src="{% static 'app/images/product/cap-1.PNG' %}"
+                class="img-responsive center-block"
+                alt=""
+              />
+              <p class="mlkpro">Cap</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div
+        class="col-md-4 col-sm-4 mi-go wow fadeInUp"
+        data-wow-duration="1s"
+        data-wow-delay="0.6s"
+        style="
+          animation-duration: 1s;
+          animation-delay: 0.6s;
+          animation-name: none;
+        "
+      >
+        <div class="goodnesssec buttermilk curdbgpro">
+          <a href="{% url 'category' 'TS' %}">
+            <div class="goodnessseccont text-center">
+              <img
+                src="{% static 'app/images/product/shirt-2.PNG' %}"
+                class="img-responsive center-block"
+                alt=""
+              />
+              <p class="mlkpro">Shirt</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div
+        class="col-md-4 col-sm-4 mi-go wow fadeInUp"
+        data-wow-duration="1s"
+        data-wow-delay="0.6s"
+        style="
+          animation-duration: 1s;
+          animation-delay: 0.6s;
+          animation-name: none;
+        "
+      >
+        <div class="goodnesssec buttermilk buttermilk">
+          <a href="{% url 'category' 'JK' %}">
+            <div class="goodnessseccont text-center">
+              <img
+                src="{% static 'app/images/product/jacket-1.png' %}"
+                class="img-responsive center-block"
+                alt=""
+              />
+              <p class="mlkpro">Jacket</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br /><br />
+  {% endblock main-content %}
+</div>

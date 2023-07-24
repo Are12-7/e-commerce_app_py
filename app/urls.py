@@ -32,6 +32,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
+    path('success-message/', views.contactMessage, name='success-message'),
     path('category/<slug:val>', views.category, name='category'),
     path('category-title/<val>', views.categoryTitle, name='category-title'),
     path('product-detail/<int:pk>', views.productDetail, name='product-detail'),
@@ -45,6 +46,8 @@ urlpatterns = [
     path('checkout/', views.checkout_session, name='checkout'),
     path('cancel/', views.CancelPayment, name='cancel'),
     path('success/', views.SuccessfulPayment, name='success'),
+    # ORDER
+    path('orders/', views.OrdersDetail, name='orders'),
 
     
 

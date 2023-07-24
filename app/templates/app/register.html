@@ -5,50 +5,74 @@
 {% endblock title %}
 
 {% block main-content %}
-    <div class="container">
-        <div class="row my-3">
-            <div class="col-sm-6 offset-sm-3">
-                
-                <h3 class="text-center">Create Account</h3>
+<div class="container mt-5">
+  <!-- INVALID/SUCCESS MESSAGE -->
+  {% if messages %} {% for msg in messages %}
+  <div class="alert alert-{{ msg.tags }}" role="alert">
+    {{ msg }}
+  </div>
+  {% endfor %} {% endif %}
+  <style>
+    .container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .form-container {
+      flex-basis: 50%;
+    }
+    
+    .img-container {
+      flex-basis: 50%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      margin-right: 10px;
+    }
+    
+    .form-container form {
+      width: 100%;
+    }
+    
+    .img-container img {
+      height: 820px; /* Adjust the height as per your requirements */
+      width: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    </style>
 
-                  <!--INVALID/SUCCESS MESSAGE-->
-                  {% if messages %}
-                  {% for msg in messages %}
-                      <div class="alert alert-{{msg.tags}}" role="alert">
-                          {{msg}}
-                      </div>
-                  {% endfor %}
-                  {% endif %}
-                
-                <form action="" method="post" class="shadow p-5" novalidate>
-                    {% csrf_token %}
-                    {% for field in form %}
-                        {{field.label}} {{field}}  
-                        <small class="text-danger">
-                            {{field.errors|striptags}}
-                        </small>
-                        <br>
-                    {% endfor %}
-                    <input type="submit" value="Submit" class="btn btn-primary">
-                    <br>
-                    <div class="text-center text-primary fw-bold">
-                        <small>
-                            Already have an account?
-                            <a href="{% url 'login' %}" class="text-danger">
-                                Login
-                            </a>
-                        </small>
-                    </div>
-
-                    <!--DISPLAY ERROR MESSAGE-->
-                    {% if form.non_field_errors %}
-                        {% for error in form.non_field_errors %}
-                            <p class="alet alert-danger my-3">{{error}}</p>
-                        {% endfor %}
-                    {% endif %}
-                </form>
-            </div>
+  <div class="container">
+    <div class="img-container">
+        <img src='{% static "app/images/welcome.jpg" %}' alt="Example Image">
+      </div>
+    <div class="form-container">
+      <form action="" method="post" class="shadow p-5 bg-body-tertiary" novalidate>
+        {% csrf_token %}
+        <h3 class="text-center">Create Account</h3>
+        {% for field in form %}
+        <div class="mb-3">
+          <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}:</label>
+          <div class="input-group justify-content-center ">
+            {{ field }}
+          </div>
+          <small class="d-block text-danger my-2">{{ field.errors|striptags }}</small>
         </div>
+        {% endfor %}
+  
+        <button type="submit" class="btn btn-primary mt-3">Register</button>
+  
+        {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <p class="alert alert-danger my-3">{{ error }}</p>
+        {% endfor %}
+        {% endif %}
+      </form>
     </div>
-    <br><br>
+  
+    
+  </div>
+</div>
+<br><br>
 {% endblock main-content %}
+
