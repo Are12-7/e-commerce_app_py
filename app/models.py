@@ -64,7 +64,7 @@ class Orders(models.Model):
 # CONTACT FORM
 class Contact(models.Model):
     full_name = models.CharField(max_length=150)
-    email = models.EmailField(unique=True, null=True)
+    email = models.EmailField(unique=False, null=True)
     subject = models.CharField(max_length=80)
     message = models.TextField(default='')
     

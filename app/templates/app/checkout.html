@@ -43,11 +43,8 @@
                         <p>Address: {{request.user.address}}</p>
                     </div>
                 </div>
-                <div class="form-check mb-3">
-                    <label for="final_price" class="form-label">Total Amount</label>
-                    <input type="number" class="form-control" name="final_price" value={{final_price}} readonly>
-                </div>
                 <div class="text-end">
+                    <br>
                     <form action="" method="POST">
                         {% csrf_token %}
                         <button href="{% url 'checkout' %}" type="submit" id="checkout-button" class="btn btn-warning">Payment</button>
